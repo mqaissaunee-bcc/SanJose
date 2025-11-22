@@ -3,62 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SanJose AI Examples</title>    <style>
+    <title>SanJose AI Examples</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #1f2933;
+            --card-bg: #ffffff;
+            --card-border: #3498db;
+            --card-hover-bg: #e9ecef;
+            --accent-color: #3498db;
+            --muted-text: #6b7280;
+            --header-bg: #ffffff;
+            --control-bg: #ffffff;
+            --shadow-soft: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        body.dark-mode {
+            --bg-color: #0b1120;
+            --text-color: #e5e7eb;
+            --card-bg: #020617;
+            --card-border: #60a5fa;
+            --card-hover-bg: #020617;
+            --accent-color: #60a5fa;
+            --muted-text: #9ca3af;
+            --header-bg: #020617;
+            --control-bg: #020617;
+            --shadow-soft: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px 16px 48px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
+
+        .app-shell {
+            margin: 0 auto;
+        }
+
+        header {
+            background: var(--header-bg);
+            box-shadow: var(--shadow-soft);
+            border-radius: 16px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        @media (min-width: 640px) {
+            header {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
         h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 40px;
+            margin: 0;
+            font-size: clamp(1.7rem, 2.4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: 0.02em;
         }
+
+        .subtitle {
+            margin-top: 4px;
+            font-size: 0.9rem;
+            color: var(--muted-text);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.6);
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--control-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(15,23,42,0.15);
+            transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+        }
+
+        .btn span.icon {
+            font-size: 1.05rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(15,23,42,0.2);
+            border-color: var(--accent-color);
+        }
+
+        .btn.active {
+            background: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .category {
+            background-color: transparent;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+            margin: 4px 2px 8px;
+        }
+
+        .category-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .category-tagline {
+            font-size: 0.8rem;
+            color: var(--muted-text);
+        }
+
         .links-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: var(--card-bg);
+            padding: 20px 18px;
+            border-radius: 14px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
         }
+
+        /* Card vs list layout */
+        body.view-cards .links-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+
         .link-item {
-            margin: 20px 0;
-            padding: 20px;
-            border-left: 4px solid #3498db;
-            background-color: #f8f9fa;
-            transition: transform 0.2s;
+            padding: 14px 14px 12px;
+            border-left: 4px solid var(--card-border);
+            background-color: rgba(148,163,184,0.05);
+            border-radius: 10px;
+            transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+            box-shadow: 0 1px 2px rgba(15,23,42,0.08);
         }
+
+        body.view-cards .link-item {
+            border-left-width: 3px;
+        }
+
         .link-item:hover {
-            transform: translateX(5px);
-            background-color: #e9ecef;
+            transform: translateY(-2px);
+            background-color: var(--card-hover-bg);
+            box-shadow: 0 4px 10px rgba(15,23,42,0.25);
+            border-color: var(--accent-color);
         }
+
         .link-item a {
             text-decoration: none;
-            color: #2c3e50;
-            font-size: 18px;
-            font-weight: bold;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
+
         .link-item a:hover {
-            color: #3498db;
+            color: var(--accent-color);
         }
+
+        .link-item a .link-icon {
+            font-size: 1.1rem;
+        }
+
         .link-item p {
-            margin: 10px 0 0 0;
-            color: #7f8c8d;
-            font-size: 14px;
+            margin: 6px 0 0 0;
+            color: var(--muted-text);
+            font-size: 0.85rem;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            margin-top: 6px;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.8);
+            color: var(--muted-text);
+        }
+
+        footer {
+            margin-top: 24px;
+            font-size: 0.75rem;
+            text-align: center;
+            color: var(--muted-text);
         }
     </style>
 </head>
-<body>
-    <h1>SanJose AI Examples</h1>    
-    <div class="links-container">
-        <div class="link-item">
-            <a href="syllabus.html" target="_blank">📋 Course Syllabus</a>            <p>View the complete course syllabus including objectives, schedule, and policies.</p>
-        </div>
-        
-        <div class="link-item">
-            <a href="photosynthesis_lesson.html" target="_blank">🌱 Photosynthesis Lesson</a>            <p>Interactive lesson on photosynthesis and plant biology.</p>
-        </div>
+<body class="view-list">
+    <div class="app-shell">
+        <header>
+            <div>
+                <h1>SanJose AI Examples</h1>
+                <p class="subtitle">Quick links to sample AI-enhanced materials and lessons.</p>
+            </div>
+            <div class="controls" aria-label="View and theme controls">
+                <button id="darkModeToggle" class="btn" type="button" aria-pressed="false">
+                    <span class="icon">🌙</span>
+                    <span>Dark mode</span>
+                </button>
+                <button id="listViewBtn" class="btn active" type="button" aria-pressed="true">
+                    <span class="icon">📄</span>
+                    <span>List view</span>
+                </button>
+                <button id="cardViewBtn" class="btn" type="button" aria-pressed="false">
+                    <span class="icon">🗂️</span>
+                    <span>Card view</span>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Category 1: Course Information -->
+            <section class="category" aria-labelledby="cat-course-info">
+                <div class="category-header">
+                    <h2 id="cat-course-info" class="category-title">Course Information</h2>
+                    <span class="category-tagline">High-level documents and overviews</span>
+                </div>
+                <div class="links-container" data-category="course-information">
+                    <div class="link-item">
+                        <a href="syllabus.html" target="_blank" rel="noopener">
+                            <span class="link-icon">📋</span>
+                            <span>Course Syllabus</span>
+                        </a>
+                        <p>Full course overview including objectives, weekly schedule, and policies.</p>
+                        <span class="meta-pill">Core document</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category 2: Interactive Lessons -->
+            <section class="category" aria-labelledby="cat-interactive-lessons">
+                <div class="category-header">
+                    <h2 id="cat-interactive-lessons" class="category-title">Interactive Lessons</h2>
+                    <span class="category-tagline">Hands-on activities and demonstrations</span>
+                </div>
+                <div class="links-container" data-category="interactive-lessons">
+                    <div class="link-item">
+                        <a href="photosynthesis_lesson.html" target="_blank" rel="noopener">
+                            <span class="link-icon">🌱</span>
+                            <span>Photosynthesis Lesson</span>
+                        </a>
+                        <p>Interactive exploration of photosynthesis and plant biology with visuals and checks for understanding.</p>
+                        <span class="meta-pill">STEM / Biology</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            Toggle dark mode and switch between list and card views to match your display or projector.
+        </footer>
     </div>
+
+    <script>
+        (function () {
+            const body = document.body;
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const listViewBtn = document.getElementById('listViewBtn');
+            const cardViewBtn = document.getElementById('cardViewBtn');
+
+            // Dark mode toggle
+            darkModeToggle.addEventListener('click', () => {
+                const isDark = body.classList.toggle('dark-mode');
+                darkModeToggle.setAttribute('aria-pressed', String(isDark));
+                darkModeToggle.querySelector('span.icon').textContent = isDark ? '☀️' : '🌙';
+                darkModeToggle.querySelectorAll('span')[1].textContent = isDark ? 'Light mode' : 'Dark mode';
+            });
+
+            // View toggle helpers
+            function setView(mode) {
+                if (mode === 'list') {
+                    body.classList.remove('view-cards');
+                    body.classList.add('view-list');
+
+                    listViewBtn.classList.add('active');
+                    listViewBtn.setAttribute('aria-pressed', 'true');
+
+                    cardViewBtn.classList.remove('active');
+                    cardViewBtn.setAttribute('aria-pressed', 'false');
+                } else if (mode === 'cards') {
+                    body.classList.remove('view-list');
+                    body.classList.add('view-cards');
+
+                    cardViewBtn.classList.add('active');
+                    cardViewBtn.setAttribute('aria-pressed', 'true');
+
+                    listViewBtn.classList.remove('active');
+                    listViewBtn.setAttribute('aria-pressed', 'false');
+                }
+            }
+
+            listViewBtn.addEventListener('click', () => setView('list'));
+            cardViewBtn.addEventListener('click', () => setView('cards'));
+        })();
+    </script>
 </body>
 </html>
