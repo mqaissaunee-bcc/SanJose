@@ -3,454 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAN121-301 Course Syllabus | Interactive</title>
-    <!-- Tailwind CSS for Styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- html2pdf Library for PDF Generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>LANI21-301 Course Materials</title>
     <style>
-        /* Custom Accessibility & Print Styles */
-        :root {
-            --primary-color: #1e3a8a; /* Web-safe Dark Blue */
-            --secondary-color: #1d4ed8; /* Lighter Blue */
-            --bg-color: #f8fafc;
-            --text-color: #1f2937;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            line-height: 1.6;
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
         }
-
-        .editable-active {
-            border: 1px dashed #2563eb;
-            background-color: #eff6ff;
-            padding: 2px;
-            border-radius: 4px;
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
         }
-
-        /* Focus styles for ADA compliance */
-        button:focus, [contenteditable]:focus {
-            outline: 3px solid #f59e0b; /* High contrast orange focus ring */
-            outline-offset: 2px;
+        .links-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
-        /* Print specific styles */
-        @media print {
-            .no-print { display: none !important; }
-            body { background-color: white; }
-            .container { max-width: 100%; width: 100%; padding: 0; margin: 0; }
-            a { text-decoration: none; color: black; }
+        .link-item {
+            margin: 20px 0;
+            padding: 20px;
+            border-left: 4px solid #3498db;
+            background-color: #f8f9fa;
+            transition: transform 0.2s;
         }
-        
-        .placeholder-text {
-            color: #dc2626;
+        .link-item:hover {
+            transform: translateX(5px);
+            background-color: #e9ecef;
+        }
+        .link-item a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-size: 18px;
             font-weight: bold;
+        }
+        .link-item a:hover {
+            color: #3498db;
+        }
+        .link-item p {
+            margin: 10px 0 0 0;
+            color: #7f8c8d;
+            font-size: 14px;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
-
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-800 text-white p-4 z-50 rounded">Skip to main content</a>
-
-    <!-- Toolbar (No Print) -->
-    <nav class="bg-slate-900 text-white p-4 sticky top-0 z-40 shadow-lg no-print" aria-label="Toolbox">
-        <div class="container mx-auto flex flex-wrap justify-between items-center gap-4">
-            <h1 class="text-xl font-bold"><i class="fas fa-book-open mr-2" aria-hidden="true"></i>Syllabus Editor</h1>
-            <div class="flex flex-wrap gap-2">
-                <!-- FIXED: Changed bg-yellow-600 to bg-yellow-700 for WCAG AA Contrast Compliance -->
-                <button onclick="toggleEditMode()" id="editBtn" class="bg-yellow-700 hover:bg-yellow-800 text-white px-4 py-2 rounded transition flex items-center gap-2" aria-pressed="false">
-                    <i class="fas fa-pen" aria-hidden="true"></i> <span id="editBtnText">Enable Editing</span>
-                </button>
-                <button onclick="generatePDF()" class="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded transition flex items-center gap-2">
-                    <i class="fas fa-file-pdf" aria-hidden="true"></i> Download PDF
-                </button>
-                <button onclick="exportJSON()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded transition flex items-center gap-2">
-                    <i class="fas fa-download" aria-hidden="true"></i> Export JSON
-                </button>
-                <label class="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded transition flex items-center gap-2 cursor-pointer">
-                    <i class="fas fa-upload" aria-hidden="true"></i> Import JSON
-                    <input type="file" id="jsonInput" class="hidden" accept=".json" onchange="importJSON(this)">
-                </label>
-            </div>
+<body>
+    <h1>LANI21-301 Course Materials</h1>
+    
+    <div class="links-container">
+        <div class="link-item">
+            <a href="syllabus.html">📋 Course Syllabus</a>
+            <p>View the complete course syllabus including objectives, schedule, and policies.</p>
         </div>
-    </nav>
-
-    <!-- Main Content Area -->
-    <main id="main-content" class="flex-grow container mx-auto p-4 md:p-8 max-w-5xl bg-white shadow-xl my-8 rounded-lg print:shadow-none print:my-0">
         
-        <div id="syllabus-container">
-            <!-- Header Section -->
-            <header class="text-center border-b-4 border-blue-900 pb-6 mb-8" id="section-header">
-                <div class="mb-2">
-                    <h2 class="text-2xl font-bold text-blue-900 uppercase tracking-wide" data-key="collegeName">Moraine Valley Community College</h2>
-                    <h3 class="text-lg text-gray-700" data-key="divisionName">Division of Academic Affairs</h3>
-                    <h3 class="text-lg text-gray-700" data-key="deptName">Department of Computer Integrated Technologies</h3>
-                </div>
-                <h1 class="text-4xl font-extrabold mt-4 text-slate-800" data-key="courseTitle">Course Syllabus</h1>
-            </header>
-
-            <!-- Part 1: Instructor Info -->
-            <section class="mb-10" aria-labelledby="instructor-info">
-                <h2 id="instructor-info" class="text-2xl font-bold bg-blue-100 text-blue-900 p-2 rounded mb-4 border-l-4 border-blue-600">
-                    Part 1: Instructor and Registration Information
-                </h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-slate-50 p-4 rounded border border-slate-200 shadow-sm">
-                        <h3 class="font-bold text-lg mb-2 border-b border-slate-300 pb-1">Instructor Details</h3>
-                        <ul class="space-y-2">
-                            <li><strong>Instructor:</strong> <span data-key="instructorName">Dr. John Sands</span></li>
-                            <li><strong>Office:</strong> <span data-key="officeLoc">T109</span></li>
-                            <li><strong>Mailbox:</strong> <span data-key="mailbox">T116</span></li>
-                            <li><strong>Phone:</strong> <span data-key="phone">708-974-5426</span></li>
-                            <li><strong>Email:</strong> <span data-key="email">sands@morainevalley.edu</span></li>
-                        </ul>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded border border-slate-200 shadow-sm">
-                        <h3 class="font-bold text-lg mb-2 border-b border-slate-300 pb-1">Office Hours</h3>
-                        <div data-key="officeHours" class="whitespace-pre-line">
-                            Mon: 5pm-6pm; Tues: 11am-12pm; 
-                            Wed: 11am-12pm; Thurs: 11am-12pm
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 bg-yellow-50 border-l-4 border-yellow-500 p-4">
-                    <h3 class="font-bold text-yellow-800 mb-2">Important Dates</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div><strong>First Day of Class:</strong> <span data-key="startDate" class="placeholder-text">[INPUT Start Date]</span></div>
-                        <div><strong>Last Day of Class:</strong> <span data-key="endDate" class="placeholder-text">[INPUT End Date]</span></div>
-                        <div><strong>Final Exam:</strong> <span data-key="finalDate" class="placeholder-text">[#Value1]</span></div>
-                        <div><strong>Last Date to Drop (Refund):</strong> <span data-key="dropRefund" class="placeholder-text">[#Value2]</span></div>
-                        <div><strong>Last Date to Drop ("W"):</strong> <span data-key="dropW" class="placeholder-text">[#Value3]</span></div>
-                    </div>
-                </div>
-                
-                <div class="mt-4 text-sm text-gray-600 italic">
-                    <p>Please note: If you have a hold on your record which prevents you from dropping classes online, you must either visit the Registration Office (Building S, Room 111A) or call (708) 974-2110 to drop classes during normal business hours.</p>
-                </div>
-            </section>
-
-            <!-- Part 2: Course Info -->
-            <section class="mb-10" aria-labelledby="course-info">
-                <h2 id="course-info" class="text-2xl font-bold bg-blue-100 text-blue-900 p-2 rounded mb-4 border-l-4 border-blue-600">
-                    Part 2: Course Information
-                </h2>
-                
-                <div class="mb-4">
-                     <strong>Effective Date:</strong> <span data-key="effectiveDate" class="placeholder-text">[#Value4]</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="p-3 bg-gray-100 rounded">
-                        <span class="block text-xs font-bold text-gray-500 uppercase">Class Title</span>
-                        <span data-key="classTitle" class="text-lg font-semibold">Network Essentials/Network+</span>
-                    </div>
-                    <div class="p-3 bg-gray-100 rounded">
-                        <span class="block text-xs font-bold text-gray-500 uppercase">Course Number</span>
-                        <span data-key="classNumber" class="text-lg font-semibold">LAN121</span>
-                    </div>
-                    <div class="p-3 bg-gray-100 rounded">
-                        <span class="block text-xs font-bold text-gray-500 uppercase">Section</span>
-                        <span data-key="sectionNumber" class="text-lg font-semibold">301</span>
-                    </div>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">Course Description</h3>
-                    <p data-key="courseDesc" class="text-justify">
-                        This course introduces the operation of computer networks and networking devices. The course also provides an examination of the evolution of data communications and computer networks. Hardware and software network configurations, operations, and requirements will be discussed. Topics include network media, physical and logical topologies, the OSI model, protocols and standards, network implementation, and network support. This course is designed to prepare the successful student for the Network+ certification. Fee is required. (4 contact hours)
-                    </p>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">Course Level Outcomes</h3>
-                    <div class="pl-4 border-l-2 border-slate-300">
-                        <ul class="list-disc list-inside space-y-1" data-key="outcomes">
-                            <li>Describe history and evolution of data communications and computer networks</li>
-                            <li>Determine hardware and software requirements to operate various types of networks</li>
-                            <li>Describe the various types of data transmission media topologies</li>
-                            <li>Describe Ethernet media access</li>
-                            <li>Categorize network operations in terms of the OSI model</li>
-                            <li>Discuss various types of protocol stacks and their advantages and disadvantages</li>
-                            <li>Analyze various types of network configurations</li>
-                            <li>Use various TCP/IP utilities to troubleshoot and analyze IP networks</li>
-                            <li>Describe the purpose and characteristics of fault tolerance</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Part 3: Schedule -->
-            <section class="mb-10" aria-labelledby="schedule-info">
-                <h2 id="schedule-info" class="text-2xl font-bold bg-blue-100 text-blue-900 p-2 rounded mb-4 border-l-4 border-blue-600">
-                    Part 3: Class Schedule
-                </h2>
-                
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-300">
-                        <thead class="bg-slate-800 text-white">
-                            <tr>
-                                <!-- FIXED: Added scope="col" for Screen Reader navigation -->
-                                <th scope="col" class="py-3 px-4 text-left border-r border-slate-600 w-20">Week</th>
-                                <th scope="col" class="py-3 px-4 text-left border-r border-slate-600">Assignment Details</th>
-                                <th scope="col" class="py-3 px-4 text-left border-r border-slate-600">Due Date</th>
-                                <th scope="col" class="py-3 px-4 text-left">Meeting Info</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200" id="schedule-body">
-                            <!-- Week 1 -->
-                            <tr class="hover:bg-slate-50">
-                                <td class="py-2 px-4 font-bold border-r">Week 1</td>
-                                <td class="py-2 px-4 border-r" data-key="w1_desc">Activity1: OSI Table<br>Lab 0 - Network Plus Exploration<br>Chapter 1 & 2 Quiz</td>
-                                <td class="py-2 px-4 border-r font-mono text-sm" data-key="w1_due">[#Value10] 11:59pm</td>
-                                <td class="py-2 px-4" data-key="w1_meet">Class Meets 9:00am Webex [#Value20]</td>
-                            </tr>
-                            <!-- Week 2 -->
-                            <tr class="hover:bg-slate-50">
-                                <td class="py-2 px-4 font-bold border-r">Week 2</td>
-                                <td class="py-2 px-4 border-r" data-key="w2_desc">Chapter 3 & 4 Quiz<br>Project 1 - Computer Math<br>Lab-1: Network Devices</td>
-                                <td class="py-2 px-4 border-r font-mono text-sm" data-key="w2_due">[#Value11] 11:59pm</td>
-                                <td class="py-2 px-4" data-key="w2_meet">Class Meets 9:00am Webex [#Value21]</td>
-                            </tr>
-                            <!-- Week 3 -->
-                            <tr class="hover:bg-slate-50">
-                                <td class="py-2 px-4 font-bold border-r">Week 3</td>
-                                <td class="py-2 px-4 border-r" data-key="w3_desc">Chapter 5 & 6 Quiz<br>Lab-2: Working with VLANs and Trunks<br>Lab-3: Using DHCP</td>
-                                <td class="py-2 px-4 border-r font-mono text-sm" data-key="w3_due">[#Value12] 11:59pm</td>
-                                <td class="py-2 px-4" data-key="w3_meet">No Class Meeting</td>
-                            </tr>
-                             <!-- Week 4 -->
-                             <tr class="hover:bg-slate-50">
-                                <td class="py-2 px-4 font-bold border-r">Week 4</td>
-                                <td class="py-2 px-4 border-r" data-key="w4_desc">Chapter 7, 8 & 9 Quiz<br>Lab-4: NAT/PAT<br>Lab-5: Routing</td>
-                                <td class="py-2 px-4 border-r font-mono text-sm" data-key="w4_due">[#Value13] 11:59pm</td>
-                                <td class="py-2 px-4" data-key="w4_meet">Class Meets 9:00am Webex [#Value22]</td>
-                            </tr>
-                             <!-- Week 5 -->
-                             <tr class="hover:bg-slate-50">
-                                <td class="py-2 px-4 font-bold border-r">Week 5</td>
-                                <td class="py-2 px-4 border-r" data-key="w5_desc">Chapter 10, 11 & 12 Quiz<br>Lab-6: Services (DNS, etc)<br>Lab-7: Wireless</td>
-                                <td class="py-2 px-4 border-r font-mono text-sm" data-key="w5_due">[#Value14] 11:59pm</td>
-                                <td class="py-2 px-4" data-key="w5_meet">Class Meets 9:00am Webex [#Value23]</td>
-                            </tr>
-                             <!-- Week 6 -->
-                             <tr class="hover:bg-slate-50">
-                                <td class="py-2 px-4 font-bold border-r">Week 6</td>
-                                <td class="py-2 px-4 border-r" data-key="w6_desc">Chapter 13, 14 & 15 Quiz<br>Lab-8: Using IPv6</td>
-                                <td class="py-2 px-4 border-r font-mono text-sm" data-key="w6_due">[#Value15] 11:59pm</td>
-                                <td class="py-2 px-4" data-key="w6_meet">No Class Meets</td>
-                            </tr>
-                             <!-- Week 7 -->
-                             <tr class="hover:bg-slate-50">
-                                <td class="py-2 px-4 font-bold border-r">Week 7</td>
-                                <td class="py-2 px-4 border-r" data-key="w7_desc">Chapter 16, 17 & 18 Quiz<br>Lab-9: Firewall and ACLs</td>
-                                <td class="py-2 px-4 border-r font-mono text-sm" data-key="w7_due">[#Value16] 11:59pm</td>
-                                <td class="py-2 px-4" data-key="w7_meet">Class Meets 9:00am Webex [#Value24]</td>
-                            </tr>
-                             <!-- Week 8 -->
-                             <tr class="hover:bg-slate-50">
-                                <td class="py-2 px-4 font-bold border-r">Week 8</td>
-                                <td class="py-2 px-4 border-r" data-key="w8_desc">LAN 121 Final Exam (Ch 11 - 20)</td>
-                                <td class="py-2 px-4 border-r font-mono text-sm" data-key="w8_due">[#Value17] 11:59pm</td>
-                                <td class="py-2 px-4" data-key="w8_meet">No Class Meeting</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Grading Section -->
-            <section class="mb-10" aria-labelledby="grading-info">
-                <h2 id="grading-info" class="text-2xl font-bold bg-blue-100 text-blue-900 p-2 rounded mb-4 border-l-4 border-blue-600">
-                    Grading & Policies
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="font-bold text-lg mb-2">Graded Assignments</h3>
-                        <table class="w-full border-collapse border border-gray-300 text-sm">
-                            <tr class="bg-gray-100">
-                                <!-- FIXED: Added scope="col" for Screen Reader navigation -->
-                                <th scope="col" class="border p-2 text-left">Type</th>
-                                <th scope="col" class="border p-2">Qty</th>
-                                <th scope="col" class="border p-2">Weight</th>
-                            </tr>
-                            <tr>
-                                <td class="border p-2">Online Learning Activities (OLAs)</td>
-                                <td class="border p-2 text-center" data-key="grade_ola_qty">10</td>
-                                <td class="border p-2 text-center" data-key="grade_ola_pct">50%</td>
-                            </tr>
-                            <tr>
-                                <td class="border p-2">Chapter Exams</td>
-                                <td class="border p-2 text-center" data-key="grade_exam_qty">13</td>
-                                <td class="border p-2 text-center" data-key="grade_exam_pct">40%</td>
-                            </tr>
-                            <tr>
-                                <td class="border p-2">Final Exam</td>
-                                <td class="border p-2 text-center" data-key="grade_final_qty">1</td>
-                                <td class="border p-2 text-center" data-key="grade_final_pct">10%</td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div>
-                        <h3 class="font-bold text-lg mb-2">Grade Scale</h3>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="bg-green-100 p-2 rounded text-center border border-green-200">A = 92-100%</div>
-                            <div class="bg-blue-100 p-2 rounded text-center border border-blue-200">B = 85-91%</div>
-                            <div class="bg-yellow-100 p-2 rounded text-center border border-yellow-200">C = 77-84%</div>
-                            <div class="bg-orange-100 p-2 rounded text-center border border-orange-200">D = 70-76%</div>
-                            <div class="bg-red-100 p-2 rounded text-center border border-red-200 col-span-2">F = Below 70%</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 space-y-4">
-                    <div class="bg-gray-50 p-4 rounded border-l-4 border-gray-600">
-                        <h3 class="font-bold text-gray-800">Attendance & Participation</h3>
-                        <p data-key="attendance_policy" class="text-sm text-gray-700 mt-1">
-                            Attendance is expected and required. Instructors have the authority to assign points to student’s attendance and participation. Excessive absence can affect final grade.
-                        </p>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded border-l-4 border-red-600">
-                        <h3 class="font-bold text-red-800">Academic Integrity</h3>
-                        <p data-key="integrity_policy" class="text-sm text-gray-700 mt-1">
-                            Cheating and plagiarism is not allowed. Any student caught will be disciplined based on the severity of the offense, up to dismissal and a grade of "F".
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-             <!-- Signature Section (For Print) -->
-             <section class="mt-12 pt-6 border-t-2 border-gray-400 break-inside-avoid" aria-labelledby="signature-section">
-                <h2 id="signature-section" class="text-xl font-bold mb-4">Syllabus Agreement</h2>
-                <p class="mb-8 text-sm">I acknowledge that I have read and understand this syllabus. I understand that this is a hybrid class and that in-classroom sessions are mandatory.</p>
-                
-                <div class="flex justify-between items-end mt-10">
-                    <div class="w-1/2 border-t border-black mr-4">
-                        <p class="mt-1 text-sm">Student Signature</p>
-                    </div>
-                    <div class="w-1/4 border-t border-black">
-                        <p class="mt-1 text-sm">Date</p>
-                    </div>
-                </div>
-            </section>
+        <div class="link-item">
+            <a href="photosynthesis_lesson.html">🌱 Photosynthesis Lesson</a>
+            <p>Interactive lesson on photosynthesis and plant biology.</p>
         </div>
-
-    </main>
-
-    <footer class="bg-slate-900 text-slate-400 py-6 text-center no-print">
-        <p>&copy; 2025 Department of Computer Integrated Technologies</p>
-    </footer>
-
-    <!-- JavaScript Logic -->
-    <script>
-        // --- Edit Mode Logic ---
-        let isEditMode = false;
-
-        function toggleEditMode() {
-            isEditMode = !isEditMode;
-            const elements = document.querySelectorAll('[data-key]');
-            const btnText = document.getElementById('editBtnText');
-            const btn = document.getElementById('editBtn');
-
-            elements.forEach(el => {
-                el.contentEditable = isEditMode;
-                if(isEditMode) {
-                    el.classList.add('editable-active');
-                } else {
-                    el.classList.remove('editable-active');
-                }
-            });
-
-            if (isEditMode) {
-                btnText.textContent = "Disable Editing";
-                // FIXED: Updated logic to match new accessible button colors
-                btn.classList.replace('bg-yellow-700', 'bg-red-600');
-                btn.classList.replace('hover:bg-yellow-800', 'hover:bg-red-700');
-                btn.setAttribute('aria-pressed', 'true');
-            } else {
-                btnText.textContent = "Enable Editing";
-                // FIXED: Updated logic to match new accessible button colors
-                btn.classList.replace('bg-red-600', 'bg-yellow-700');
-                btn.classList.replace('hover:bg-red-700', 'hover:bg-yellow-800');
-                btn.setAttribute('aria-pressed', 'false');
-            }
-        }
-
-        // --- PDF Export Logic ---
-        function generatePDF() {
-            // Temporarily hide non-printable styles if needed, though CSS @media print handles most
-            const element = document.getElementById('syllabus-container');
-            
-            // Options for html2pdf
-            const opt = {
-                margin:       [0.5, 0.5, 0.5, 0.5],
-                filename:     'LAN121_Syllabus.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-
-            // New Promise-based usage
-            html2pdf().set(opt).from(element).save();
-        }
-
-        // --- JSON Export Logic ---
-        function exportJSON() {
-            const data = {};
-            const elements = document.querySelectorAll('[data-key]');
-            
-            elements.forEach(el => {
-                data[el.getAttribute('data-key')] = el.innerHTML;
-            });
-
-            const jsonStr = JSON.stringify(data, null, 2);
-            const blob = new Blob([jsonStr], {type: "application/json"});
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'syllabus_data.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        // --- JSON Import Logic ---
-        function importJSON(input) {
-            const file = input.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    const elements = document.querySelectorAll('[data-key]');
-                    
-                    elements.forEach(el => {
-                        const key = el.getAttribute('data-key');
-                        if (data[key] !== undefined) {
-                            el.innerHTML = data[key];
-                        }
-                    });
-                    alert("Syllabus data loaded successfully!");
-                } catch (err) {
-                    alert("Error reading JSON file. Please ensure it is a valid syllabus export.");
-                    console.error(err);
-                }
-            };
-            reader.readAsText(file);
-        }
-    </script>
+    </div>
 </body>
 </html>
